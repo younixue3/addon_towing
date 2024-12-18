@@ -1,0 +1,38 @@
+<odoo>
+  <record id="view_hr_employee_form_inherit" model="ir.ui.view">
+    <field name="name">hr.employee.form.inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+
+      <!-- Menambahkan License Information ke tab personal_information -->
+      <xpath expr="//page[@name='personal_information']" position="inside">
+        <group string="License Information">
+          <field name="license_number" string="License Number (SIM)" placeholder="Nomor SIM"/>
+          <field name="license_expiry_date" string="License Expiry Date" placeholder="Tanggal Kadaluarsa SIM"/>
+        </group>
+      </xpath>
+
+      <!-- Menambahkan License Information ke grup di dalam sheet -->
+      <xpath expr="//sheet/group" position="inside">
+        <group string="License Information">
+          <field name="license_number" string="License Number (SIM)" placeholder="Nomor SIM"/>
+          <field name="license_expiry_date" string="License Expiry Date" placeholder="Tanggal Kadaluarsa SIM"/>
+        </group>
+      </xpath>
+
+      <!-- Menambahkan halaman Assigned Vehicles -->
+      <xpath expr="//notebook" position="inside">
+        <page string="Assigned Vehicles">
+          <field name="assigned_vehicles_ids">
+            <tree>
+              <field name="name"/>
+              <field name="license_plate"/>
+            </tree>
+          </field>
+        </page>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>

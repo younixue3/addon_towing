@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="fleet_vehicle_view_form_inherit" model="ir.ui.view">
+    <field name="name">fleet.vehicle.form.inherit.towing</field>
+    <field name="model">fleet.vehicle</field>
+    <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='driver_employee_id']" position="after">
+        <field name="driver_employee_id"/>
+        <field name="job_id" string="Job Position"/>
+        <field name="license_number" string="License Number (SIM)" placeholder="Nomor SIM"/>
+      </xpath>
+
+      <!-- Menambahkan field di tab "General Information" -->
+      <xpath expr="//sheet" position="inside">
+        <group string="Towing Information">
+          <group>
+            <field name="towing_capacity"/>
+            <field name="towing_type"/>
+            <field name="additional_equipment"/>
+          </group>
+        </group>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>
