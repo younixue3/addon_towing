@@ -10,3 +10,6 @@ class HrEmployee(models.Model):
     )
     license_number = fields.Char(string="License Number (SIM)", help="Nomor SIM karyawan")
     license_expiry_date = fields.Date(string="License Expiry Date", help="Tanggal kadaluarsa SIM")
+
+    mechanic_notes = fields.Char(string="Catatan Mekanik")
+    helper_notes = fields.Char(string="Catatan Helper")

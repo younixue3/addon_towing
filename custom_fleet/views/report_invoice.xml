@@ -1,0 +1,106 @@
+<odoo>
+  <template id="custom_invoice_report" inherit_id="account.report_invoice_document">
+    <!-- Sembunyikan kolom pajak jika hide_tax True -->
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[contains(., 'Taxes')]" position="attributes">
+      <attribute name="t-if">not o.hide_tax</attribute>
+    </xpath>
+
+    <xpath expr="//table[@name='invoice_line_table']//td[@name='td_taxes']" position="attributes">
+      <attribute name="t-if">not o.hide_tax</attribute>
+    </xpath>
+
+    <!-- Sembunyikan total pajak -->
+    <xpath expr="//t[@t-call='account.document_tax_totals']" position="attributes">
+      <attribute name="t-if">not o.hide_tax</attribute>
+    </xpath>
+
+    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment']/tr[1]" position="before">
+      <tr t-if="o.hide_tax">
+        <td>
+          <strong>Total</strong>
+        </td>
+        <td class="text-end">
+          <span t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+        </td>
+      </tr>
+      <tr t-if="o.hide_tax">
+        <td>
+          <strong>Total Paid</strong>
+        </td>
+        <td class="text-end">
+          <span t-out="sum(p.get('amount', 0) - (p.get('tax_amount', 0) if o.hide_tax else 0) for p in payments_vals)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+        </td>
+      </tr>
+    </xpath>
+
+
+
+    <!-- Perbaikan jumlah yang dibayarkan di daftar pembayaran -->
+    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment']/tr/td[@class='text-end']/span" position="replace">
+      <span t-out="payment.get('amount', 0) - (payment.get('tax_amount', 0) if o.hide_tax else 0)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+    </xpath>
+
+    <!-- Tampilkan total tanpa pajak -->
+    <xpath expr="//td[contains(., 'Amount Due')]/following-sibling::td" position="replace">
+      <td class="text-end">
+        <span t-field="o.amount_residual" t-options="{'widget': 'monetary'}"/>
+      </td>
+    </xpath>
+
+    <!-- Ubah Unit Price agar termasuk pajak jika hide_tax=True -->
+    <xpath expr="//td[@name='td_price_unit']/span" position="replace">
+      <span t-out="line.price_unit * (1 + sum(tax.amount / 100 for tax in line.tax_ids) if o.hide_tax else 1)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+    </xpath>
+
+    <!-- Ubah Amount agar termasuk pajak jika hide_tax=True -->
+    <xpath expr="//td[@name='td_subtotal']/span" position="replace">
+      <span t-out="line.price_subtotal * (1 + sum(tax.amount / 100 for tax in line.tax_ids) if o.hide_tax else 1)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+    </xpath>
+
+
+
+    <!-- Tambahkan Header Kolom Baru hanya jika ada data -->
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr" position="inside">
+      <t t-if="any(line.vehicle_id or line.employee_id or line.towing_type or line.pickup_location or line.dropoff_location for line in o.invoice_line_ids)">
+        <th class="text-start">Vehicle</th>
+        <th class="text-start">Employee</th>
+        <th class="text-start">Towing Type</th>
+        <th class="text-start">Pickup Location</th>
+        <th class="text-start">Dropoff Location</th>
+      </t>
+    </xpath>
+
+
+
+    <!-- Tambahkan Data di Baris Invoice -->
+    <xpath expr="//table[@name='invoice_line_table']/tbody/t/tr" position="inside">
+      <t t-if="line.vehicle_id or line.employee_id or line.towing_type or line.pickup_location or line.dropoff_location">
+        <td name="td_vehicle" class="text-start">
+          <t t-if="line.vehicle_id">
+            <span t-field="line.vehicle_id.name"/>
+          </t>
+        </td>
+        <td name="td_employee" class="text-start">
+          <t t-if="line.employee_id">
+            <span t-field="line.employee_id.name"/>
+          </t>
+        </td>
+        <td name="td_towing_type" class="text-start">
+          <t t-if="line.towing_type">
+            <span t-field="line.towing_type"/>
+          </t>
+        </td>
+        <td name="td_pickup_location" class="text-start">
+          <t t-if="line.pickup_location">
+            <span t-field="line.pickup_location"/>
+          </t>
+        </td>
+        <td name="td_dropoff_location" class="text-start">
+          <t t-if="line.dropoff_location">
+            <span t-field="line.dropoff_location"/>
+          </t>
+        </td>
+      </t>
+    </xpath>
+  </template>
+</odoo>

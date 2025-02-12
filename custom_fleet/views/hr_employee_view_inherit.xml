@@ -5,19 +5,17 @@
     <field name="inherit_id" ref="hr.view_employee_form"/>
     <field name="arch" type="xml">
 
-      <!-- Menambahkan License Information ke tab personal_information -->
-      <xpath expr="//page[@name='personal_information']" position="inside">
-        <group string="License Information">
-          <field name="license_number" string="License Number (SIM)" placeholder="Nomor SIM"/>
-          <field name="license_expiry_date" string="License Expiry Date" placeholder="Tanggal Kadaluarsa SIM"/>
-        </group>
-      </xpath>
-
       <!-- Menambahkan License Information ke grup di dalam sheet -->
       <xpath expr="//sheet/group" position="inside">
         <group string="License Information">
           <field name="license_number" string="License Number (SIM)" placeholder="Nomor SIM"/>
           <field name="license_expiry_date" string="License Expiry Date" placeholder="Tanggal Kadaluarsa SIM"/>
+        </group>
+        <group string="Mechanic Informations">
+          <field name="mechanic_notes" string="Deskripsi Mechanic" placeholder="Tentang Mechanic"/>
+        </group>
+        <group string="Helper Informations">
+          <field name="helper_notes" string="Deskripsi Helper" placeholder="Tentang Helper"/>
         </group>
       </xpath>
 

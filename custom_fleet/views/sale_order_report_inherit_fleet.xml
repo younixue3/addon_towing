@@ -1,0 +1,73 @@
+<odoo>
+  <template id="report_saleorder_inherit_fleet" inherit_id="sale.report_saleorder_document">
+
+    <!-- Hapus kolom yang tidak diperlukan (header) -->
+    <xpath expr="//th[@name='th_quantity']" position="replace"/>
+    <xpath expr="//th[@name='th_priceunit']" position="replace"/>
+    <xpath expr="//th[@name='th_taxes']" position="replace"/>
+    <xpath expr="//th[@name='th_subtotal']" position="replace"/>
+    <xpath expr="//th[@name='th_description']" position="replace"/>
+
+    <!-- Hapus kolom yang tidak diperlukan (isi data) -->
+    <xpath expr="//td[@name='td_quantity']" position="replace"/>
+    <xpath expr="//td[@name='td_priceunit']" position="replace"/>
+    <xpath expr="//td[@name='td_taxes']" position="replace"/>
+    <xpath expr="//td[@name='td_subtotal']" position="replace"/>
+    <xpath expr="//td[@name='td_name']" position="replace"/>
+
+    <!-- Kolom Header - hanya tampilkan jika ada data -->
+    <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']/thead/tr" position="inside">
+      <t t-foreach="docs" t-as="order">
+        <t t-foreach="order.order_line" t-as="line">
+          <t t-if="line.product_id">
+            <th class="text-start">Product</th>
+          </t>
+          <t t-if="line.name">
+            <th class="text-start">Description</th>
+          </t>
+          <t t-if="line.product_uom_qty">
+            <th class="text-end">Quantity</th>
+          </t>
+          <t t-if="line.price_total">
+            <th class="text-end">Amount</th>
+          </t>
+          <t t-if="line.vehicle_id">
+            <th class="text-start">Vehicle</th>
+          </t>
+          <t t-if="line.employee_id">
+            <th class="text-start">Employee</th>
+          </t>
+          <t t-if="line.towing_type">
+            <th class="text-start">Towing Type</th>
+          </t>
+          <t t-if="line.pickup_location">
+            <th class="text-start">Pickup Location</th>
+          </t>
+          <t t-if="line.dropoff_location">
+            <th class="text-start">Dropoff Location</th>
+          </t>
+        </t>
+      </t>
+    </xpath>
+
+    <!-- Kolom Data - hanya tampilkan jika ada data -->
+    <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']/tbody" position="inside">
+      <t t-foreach="docs" t-as="order">
+        <t t-foreach="order.order_line" t-as="line">
+          <tr>
+            <td t-if="line.product_id" t-esc="line.product_id.display_name"/>
+            <td t-if="line.name" t-esc="line.name"/>
+            <td t-if="line.product_uom_qty" class="text-end" t-esc="line.product_uom_qty"/>
+            <td t-if="line.price_total" class="text-end" t-esc="line.price_total"/>
+            <td t-if="line.vehicle_id" t-esc="line.vehicle_id.name"/>
+            <td t-if="line.employee_id" t-esc="line.employee_id.name"/>
+            <td t-if="line.towing_type" t-esc="line.towing_type"/>
+            <td t-if="line.pickup_location" t-esc="line.pickup_location"/>
+            <td t-if="line.dropoff_location" t-esc="line.dropoff_location"/>
+          </tr>
+        </t>
+      </t>
+    </xpath>
+
+  </template>
+</odoo>
