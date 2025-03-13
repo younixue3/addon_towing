@@ -14,30 +14,30 @@
       <attribute name="t-if">not o.hide_tax</attribute>
     </xpath>
 
-    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment']/tr[1]" position="before">
-      <tr t-if="o.hide_tax">
-        <td>
-          <strong>Total</strong>
-        </td>
-        <td class="text-end">
-          <span t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-        </td>
-      </tr>
-      <tr t-if="o.hide_tax">
-        <td>
-          <strong>Total Paid</strong>
-        </td>
-        <td class="text-end">
-          <span t-out="sum(p.get('amount', 0) - (p.get('tax_amount', 0) if o.hide_tax else 0) for p in payments_vals)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-        </td>
-      </tr>
+    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment_vals']" position="inside">
+      <!-- Tambahkan Total dan Total Paid SEBELUM daftar pembayaran -->
+      <t t-if="o.hide_tax">
+        <tr>
+          <td>
+            <strong>Total</strong>
+          </td>
+          <td class="text-end">
+            <span t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Total Paid</strong>
+          </td>
+          <td class="text-end">
+            <span t-out="sum(p.get('amount', 0) - (p.get('tax_amount', 0) if o.hide_tax else 0) for p in payments_vals)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+          </td>
+        </tr>
+      </t>
     </xpath>
-
-
-
     <!-- Perbaikan jumlah yang dibayarkan di daftar pembayaran -->
-    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment']/tr/td[@class='text-end']/span" position="replace">
-      <span t-out="payment.get('amount', 0) - (payment.get('tax_amount', 0) if o.hide_tax else 0)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+    <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment_vals']/tr/td[@class='text-end']/span" position="replace">
+      <span t-out="payment_vals.get('amount', 0) - (payment_vals.get('tax_amount', 0) if o.hide_tax else 0)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
     </xpath>
 
     <!-- Tampilkan total tanpa pajak -->
@@ -56,8 +56,6 @@
     <xpath expr="//td[@name='td_subtotal']/span" position="replace">
       <span t-out="line.price_subtotal * (1 + sum(tax.amount / 100 for tax in line.tax_ids) if o.hide_tax else 1)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
     </xpath>
-
-
 
     <!-- Tambahkan Header Kolom Baru hanya jika ada data -->
     <xpath expr="//table[@name='invoice_line_table']/thead/tr" position="inside">
