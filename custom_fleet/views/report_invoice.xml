@@ -1,45 +1,27 @@
 <odoo>
   <template id="external_layout_inherited" inherit_id="web.external_layout_standard">
     <xpath expr="//div[1]" position="replace">
-      <div class="header-container">
-        <div class="company-details d-flex justify-content-center align-items-center gap-4">
-          <div class="text-center">
-            <h1 class="company-name mb-2">CV. CAKRA SERVICE TAMA</h1>
-            <div class="company-info">
-              <p class="mb-1">Jl. Siradj Salman No. 9, Samarinda, Kalimantan Timur</p>
-              <p class="mb-1">Telp. 0821 5000 1619, Email: cakracst@yahoo.co.id</p>
-              <p class="mb-0">NPWP: ___________________</p>
-            </div>
-          </div>
-          <img t-att-src="'/custom_fleet/static/logo.png'" 
-               class="company-logo"
-               alt="Company Logo"/>
+      <div class="header" style="margin-bottom: 20px;">
+        <div style="display:flex;">
+          <table style="margin:auto;position:relative;">
+            <tr>
+              <td>
+                <div class="text-center">
+                  <h3>CV. CAKRA SERVICE TAMA</h3>
+                  <p>Jl. Siradj Salman No. 9, Samarinda, Kalimantan Timur</p>
+                  <p>Telp. 0821 5000 1619, Email: cakracst@yahoo.co.id</p>
+                  <p>NPWP: ___________________</p>
+                </div>
+              </td>
+              <td style="vertical-align: middle; text-align: center;padding-left:20px;">
+                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                  <img style="max-height: 100px; object-fit: contain;" src="/custom_fleet/static/logo.png" />
+                </div>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
-
-      <style>
-        .header-container {
-          padding: 1.5rem 0;
-        }
-        .company-name {
-          font-size: 1.5rem;
-          font-weight: bold;
-          color: #2c3e50;
-          margin: 0;
-        }
-        .company-info {
-          font-size: 0.875rem;
-          color: #495057;
-        }
-        .company-info p {
-          line-height: 1.4;
-        }
-        .company-logo {
-          height: 80px;
-          width: 80px;
-          object-fit: contain;
-        }
-      </style>
     </xpath>
   </template>
 
@@ -48,19 +30,24 @@
       <div></div>
     </xpath>
     <xpath expr="//div[@class='mt-5 clearfix']" position="after">
-      <div>
-        <strong>No. Rek. _________________________</strong>
+      <!-- Bank account information -->
+      <div class="mt-3">
+        <strong>No. Rek: _________________________</strong>
       </div>
-      <div class="row mt-5">
+      
+      <!-- Signature section -->
+      <div class="row mt-5 mb-4">
         <div class="col-6 text-center">
           <strong>Penerima</strong>
-          <br/><br/><br/>
-          <span>_________________________</span>
+          <div class="signature-line mt-5">
+            <span class="border-top border-dark px-4">_________________________</span>
+          </div>
         </div>
         <div class="col-6 text-center">
           <strong>Hormat Kami</strong>
-          <br/><br/><br/>
-          <span>_________________________</span>
+          <div class="signature-line mt-5">
+            <span class="border-top border-dark px-4">_________________________</span>
+          </div>
         </div>
       </div>
     </xpath>
