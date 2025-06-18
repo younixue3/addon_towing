@@ -1,5 +1,69 @@
 <odoo>
+  <template id="external_layout_inherited" inherit_id="web.external_layout_standard">
+    <xpath expr="//div[1]" position="replace">
+      <div class="header-container">
+        <div class="company-details d-flex justify-content-center align-items-center gap-4">
+          <div class="text-center">
+            <h1 class="company-name mb-2">CV. CAKRA SERVICE TAMA</h1>
+            <div class="company-info">
+              <p class="mb-1">Jl. Siradj Salman No. 9, Samarinda, Kalimantan Timur</p>
+              <p class="mb-1">Telp. 0821 5000 1619, Email: cakracst@yahoo.co.id</p>
+              <p class="mb-0">NPWP: ___________________</p>
+            </div>
+          </div>
+          <img t-att-src="'/custom_fleet/static/logo.png'" 
+               class="company-logo"
+               alt="Company Logo"/>
+        </div>
+      </div>
+
+      <style>
+        .header-container {
+          padding: 1.5rem 0;
+        }
+        .company-name {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #2c3e50;
+          margin: 0;
+        }
+        .company-info {
+          font-size: 0.875rem;
+          color: #495057;
+        }
+        .company-info p {
+          line-height: 1.4;
+        }
+        .company-logo {
+          height: 80px;
+          width: 80px;
+          object-fit: contain;
+        }
+      </style>
+    </xpath>
+  </template>
+
   <template id="custom_invoice_report" inherit_id="account.report_invoice_document">
+    <xpath expr="//div[@class='row']" position="replace">
+      <div></div>
+    </xpath>
+    <xpath expr="//div[@class='mt-5 clearfix']" position="after">
+      <div>
+        <strong>No. Rek. _________________________</strong>
+      </div>
+      <div class="row mt-5">
+        <div class="col-6 text-center">
+          <strong>Penerima</strong>
+          <br/><br/><br/>
+          <span>_________________________</span>
+        </div>
+        <div class="col-6 text-center">
+          <strong>Hormat Kami</strong>
+          <br/><br/><br/>
+          <span>_________________________</span>
+        </div>
+      </div>
+    </xpath>
     <!-- Sembunyikan kolom pajak jika hide_tax True -->
     <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[contains(., 'Taxes')]" position="attributes">
       <attribute name="t-if">not o.hide_tax</attribute>
@@ -35,6 +99,7 @@
         </tr>
       </t>
     </xpath>
+
     <!-- Perbaikan jumlah yang dibayarkan di daftar pembayaran -->
     <xpath expr="//t[@t-foreach='payments_vals' and @t-as='payment_vals']/tr/td[@class='text-end']/span" position="replace">
       <span t-out="payment_vals.get('amount', 0) - (payment_vals.get('tax_amount', 0) if o.hide_tax else 0)" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
@@ -67,8 +132,6 @@
         <th class="text-start">Dropoff Location</th>
       </t>
     </xpath>
-
-
 
     <!-- Tambahkan Data di Baris Invoice -->
     <xpath expr="//table[@name='invoice_line_table']/tbody/t/tr" position="inside">
